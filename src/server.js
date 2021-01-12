@@ -34,10 +34,9 @@ const corsOptions = {
 };
 
 server.use(helmet());
-server.use(cors(corsOptions));
+server.use(cors());
 server.use(express.json());
 server.use(loggerMiddleware);
-
 server.use("/articles", articlesRoute);
 server.use(badRequestHandler);
 server.use(notFoundHandler);

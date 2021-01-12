@@ -5,14 +5,14 @@ const { body, validationResult } = require("express-validator");
 const { err } = require("../../lib");
 
 const validateReq = [
-  body("headline").notEmpty().isString(),
+  body("headLine").notEmpty().isString(),
   body("subHead").isString(),
   body("content").notEmpty().isString(),
-  body("category.*.name").isString(),
-  body("category.*.img").isURL(),
-  body("author.*.name").isString(),
-  body("author.*.img").isURL(),
-  body("cover").isURL,
+  body("category.name").isString(),
+  body("category.img").isURL(),
+  body("author.name").isString(),
+  body("author.img").isURL(),
+  body("cover").isURL(),
 ];
 
 articlesRouter.get("/", async (req, res, next) => {
@@ -36,9 +36,9 @@ articlesRouter.get("/:id", async (req, res, next) => {
 
 articlesRouter.post("/", validateReq, async (req, res, next) => {
   try {
+    console.log(req.body);
     const errors = validationResult(req);
     if (!errors.isEmpty()) return next(err(errors.array(), 400));
-
     const newPost = new ArticlesModel(req.body);
     const { _id } = await newPost.save();
     res.status(201).send(_id);
